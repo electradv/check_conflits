@@ -1,0 +1,27 @@
+name: 'Detect Merge Conflicts'
+description: 'Simula um merge entre duas branches e detecta conflitos em arquivos.'
+author: 'Bruno'
+runs:
+  using: 'composite'
+  steps:
+    - name: Instalar Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Rodar script de detecção
+      run: |
+        python ${{ github.action_path }}/detecta_conflitos.py origin/${{ inputs.base }} origin/${{ inputs.head }}
+      shell: bash
+
+inputs:
+  base:
+    description: 'Branch base (ex: main)'
+    required: true
+  head:
+    description: 'Branch feature que será mergeada'
+    required: true
+
+branding:
+  icon: git-merge
+  color: red

@@ -1,0 +1,17 @@
+name: Teste da Action
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Teste local da Action
+        uses: ./
+        with:
+          base: main
+          head: feature-x

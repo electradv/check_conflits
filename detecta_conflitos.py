@@ -8,7 +8,6 @@ def get_merge_base(branch1, branch2):
 
 def simula_merge_e_verifica_conflitos(branch1, branch2):
     base = get_merge_base(branch1, branch2)
-
     output = subprocess.check_output(
         ["git", "merge-tree", base, branch1, branch2],
         encoding="utf-8"
@@ -19,7 +18,6 @@ def simula_merge_e_verifica_conflitos(branch1, branch2):
 
     for linha in output.splitlines():
         if linha.startswith("changed in both") or linha.startswith("changed in"):
-            # Pega o nome do arquivo após "changed in both" ou "changed in"
             partes = linha.strip().split(" ")
             if len(partes) > 2:
                 arquivo_atual = partes[-1]
@@ -43,6 +41,6 @@ if __name__ == "__main__":
         print("\n⚠️ Arquivos com conflito detectado:")
         for f in conflitos:
             print(f"   - {f}")
-        sys.exit(1)  # retorna erro para quebrar pipeline
+        sys.exit(1)
     else:
         print("✅ Nenhum conflito detectado.")
