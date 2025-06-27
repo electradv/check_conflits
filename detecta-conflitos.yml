@@ -1,0 +1,24 @@
+name: Detectar Conflitos de Merge
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  detectar-conflitos:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # necessário para comparar branches
+
+      - name: Instalar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Rodar verificação de conflitos
+        run: |
+          python detecta_conflitos.py origin/${{ github.base_ref }} origin/${{ github.head_ref }}
