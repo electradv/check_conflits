@@ -3,13 +3,13 @@ import re
 import subprocess
 import sys
 
-def get_merge_base(branch1, branch2):
-    return subprocess.check_output(["git", "merge-base", branch1, branch2], encoding="utf-8").strip()
+def get_merge_base(branch_base: str, branch_feature: str):
+    return subprocess.check_output(["git", "merge-base", branch_base, branch_feature], encoding="utf-8").strip()
 
-def simulate_merge_and_check_conflicts(branch1, branch2):
-    base = get_merge_base(branch1, branch2)
+def simulate_merge_and_check_conflicts(branch_base: str, branch_feature: str):
+    base = get_merge_base(branch_base, branch_feature)
 
-    output_bytes = subprocess.check_output(["git", "merge-tree", base, branch1, branch2])
+    output_bytes = subprocess.check_output(["git", "merge-tree", base, branch_base, branch_feature])
     output = output_bytes.decode("utf-8", errors="replace")
 
     return extract_conflits(output)
@@ -44,11 +44,11 @@ if __name__ == "__main__":
     branch_feature = sys.argv[2]
 
     # Local Tests
-    # branch_base = "origin/development" #sys.argv[1]
-    # branch_feature = "origin/feature/multi-agentes" #sys.argv[2]
+    # branch_base = "origin/development"
+    # branch_feature = "feature/multi-agentes"
 
-    # branch_base = "origin/qa" #sys.argv[1]
-    # branch_feature = "origin/master" #sys.argv[2]
+    # branch_base = "origin/qa"
+    # branch_feature = "origin/master"
 
     conflits = simulate_merge_and_check_conflicts(branch_base, branch_feature)
 
